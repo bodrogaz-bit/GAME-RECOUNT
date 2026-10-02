@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Fun Weekend - Become an English Storyteller!</title>
+    <style>
+        :root {
+            --primary: #4F46E5; /* Indigo */
+            --primary-light: #818CF8;
+            --secondary: #10B981; /* Emerald */
+            --accent: #F59E0B; /* Amber */
+            --danger: #EF4444;
+            --bg-color: #F0F9FF; /* Light blue */
+            --text-main: #1F2937;
+            --text-light: #6B7280;
+            --white: #FFFFFF;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --btn-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App Container */
+        #app {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--card-shadow);
+            min-height: 100vh;
+        }
+
+        /* Top Stats Bar */
+        #stats-bar {
+            background: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #E5E7EB;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none; /* Hidden on welcome screen */
+        }
+
+        .stat-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #F3F4F6;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .stat-item span.icon { font-size: 1.2rem; }
+
+        /* Screens */
+        .screen {
+            display: none;
+            padding: 20px;
+            flex: 1;
+            animation: fadeIn 0.4s ease-in-out;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Character Guide (Raya) */
+        .raya-guide {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            background: var(--primary-light);
+            color: var(--white);
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        .raya-guide::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            bottom: -10px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: var(--primary-light) transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .raya-avatar {
+            font-size: 3rem;
+            background: var(--white);
+            border-radius: 50%;
+            padding: 10px;
+            line-height: 1;
+        }
+
+        .raya-message {
+            flex: 1;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        /* General UI Elements */
+        h1, h2, h3 { color: var(--primary); margin-bottom: 15px; text-align: center; }
+        
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 20px;
+            margin: 10px 0 20px;
+            border: 2px solid #D1D5DB;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus { border-color: var(--primary); }
+
+        .btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--btn-shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover { background-color: #4338CA; transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+        .btn.btn-secondary { background-color: var(--secondary); }
+        .btn.btn-secondary:hover { background-color: #059669; }
+        .btn.btn-accent { background-color: var(--accent); color: #fff; }
+        .btn.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Game Map */
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 500px;
+            background: #E0F2FE;
+            border-radius: var(--radius-lg);
+            border: 4px dashed #BAE6FD;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .map-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border: 4px solid #D1D5DB;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .map-node .icon { font-size: 2rem; }
+        .map-node .label { font-size: 0.7rem; font-weight: bold; margin-top: -5px; color: var(--text-main); }
+        
+        .map-node.locked { filter: grayscale(100%); opacity: 0.7; cursor: not-allowed; }
+        .map-node.unlocked { border-color: var(--accent); box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); animation: pulse 2s infinite; }
+        .map-node.completed { border-color: var(--secondary); background: #D1FAE5; }
+        .map-node.completed::after { content: '⭐'; position: absolute; top: -10px; right: -10px; font-size: 1.5rem; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Map Paths (Decorative) */
+        .map-path {
+            position: absolute;
+            background: #D1D5DB;
+            height: 8px;
+            z-index: 1;
+            transform-origin: left center;
+        }
+        .map-path.active { background: var(--secondary); }
+
+        /* Positional classes for nodes (approximated for 600x500 box) */
+        #node-1 { top: 80px; left: 50px; }
+        #node-2 { top: 50px; left: 250px; }
+        #node-3 { top: 120px; left: 450px; }
+        #node-4 { top: 280px; left: 400px; }
+        #node-5 { top: 350px; left: 200px; }
+        #node-6 { top: 300px; left: 30px; }
+
+        /* Level Container Base */
+        .level-header { width: 100%; display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .level-title { font-size: 1.5rem; color: var(--primary); margin: 0; }
+        .level-content { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; flex: 1; }
+
+        /* Generic Interactive Items */
+        .item-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; width: 100%; }
+        
+        .card {
+            background: var(--white);
+            border: 2px solid #E5E7EB;
+            border-radius: var(--radius-md);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.2s;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .card:hover { border-color: var(--primary-light); background: #F5F3FF; transform: scale(1.02); }
+        .card.selected { border-color: var(--primary); background: #EEF2FF; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2); }
+        .card.matched { background: var(--secondary); color: white; border-color: var(--secondary); cursor: default; opacity: 0.8; pointer-events: none;}
+        .card.emoji-card { font-size: 3rem; }
+
+        /* Sorting Bins (Level 2 & 3) */
+        .bins-container { display: flex; justify-content: space-around; width: 100%; gap: 20px; margin-top: 20px; }
+        .sort-bin {
+            flex: 1;
+            min-height: 150px;
+            border: 3px dashed #CBD5E1;
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: #F8FAFC;
+            transition: all 0.3s;
+        }
+        .sort-bin h3 { margin-top: 0; color: var(--text-light); }
+        .sort-bin.highlight { border-color: var(--primary); background: #F0F9FF; }
+        .sort-bin .card { margin-top: 10px; width: 90%; font-size: 1rem; padding: 10px; cursor: default; pointer-events: none;}
+
+        /* Sentence Builder (Level 4) */
+        .sentence-slots { display: flex; flex-wrap: wrap; gap: 10px; min-height: 60px; background: #F3F4F6; padding: 15px; border-radius: var(--radius-md); margin-bottom: 20px; border: 2px solid #E5E7EB; }
+        .word-slot {
+            background: var(--white); border: 2px dashed #9CA3AF; padding: 10px 15px; border-radius: var(--radius-sm); min-width: 80px; text-align: center; font-weight: bold; cursor: pointer;
+        }
+        .word-slot.filled { border-style: solid; border-color: var(--primary); background: #EEF2FF; color: var(--primary); }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .word-btn { background: var(--white); border: 2px solid #D1D5DB; padding: 10px 15px; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .word-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .word-btn.used { opacity: 0; pointer-events: none; transform: scale(0.8); }
+
+        /* Recount Explorer (Level 5) */
+        .story-box { background: #FFFBEB; padding: 20px; border-radius: var(--radius-md); border-left: 5px solid var(--accent); line-height: 1.6; font-size: 1.1rem; margin-bottom: 20px; }
+        .highlight-part { cursor: pointer; border-radius: 4px; padding: 2px 4px; transition: background 0.3s; }
+        .highlight-part:hover { background: #FEF3C7; }
+        .highlight-active { background: #FDE68A; font-weight: bold; }
+        .puzzle-container { display: flex; flex-direction: column; gap: 10px; }
+        .puzzle-piece { background: white; padding: 15px; border: 2px solid #D1D5DB; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .puzzle-piece::before { content: '↕'; color: #9CA3AF; font-size: 1.2rem; }
+        .puzzle-piece.selected { border-color: var(--primary); background: #F0F9FF; }
+
+        /* Modals & Overlays */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(3px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.3s; }
+        .modal-content {
+            background: var(--white); padding: 30px; border-radius: var(--radius-lg);
+            width: 90%; max-width: 500px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+        .modal-icon { font-size: 4rem; margin-bottom: 10px; }
+        .modal-title { color: var(--text-main); font-size: 1.8rem; margin-bottom: 10px; }
+        .modal-text { color: var(--text-light); margin-bottom: 20px; font-size: 1.1rem; }
+
+        /* Certificate */
+        #certificate-container { background: #fff; padding: 40px; border: 15px solid var(--primary); border-radius: 10px; position: relative; text-align: center; margin: 20px auto; max-width: 700px; box-shadow: var(--card-shadow); background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><g fill="%23f3f4f6" fill-opacity="0.4" fill-rule="evenodd"><circle cx="50" cy="50" r="10"/></g></svg>'); }
+        .cert-header { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; font-family: Georgia, serif; text-transform: uppercase; letter-spacing: 2px; }
+        .cert-subtitle { font-size: 1.2rem; color: #666; margin-bottom: 30px; }
+        .cert-name { font-size: 3rem; color: var(--primary); border-bottom: 2px solid var(--primary); display: inline-block; padding: 0 20px; margin-bottom: 20px; font-family: 'Comic Sans MS', cursive, sans-serif; }
+        .cert-body { font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; }
+        .badges-display { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
+        .badge-item { display: flex; flex-direction: column; align-items: center; width: 80px; }
+        .badge-icon { font-size: 2.5rem; background: #FEF3C7; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent); }
+        .badge-label { font-size: 0.7rem; font-weight: bold; margin-top: 5px; text-align: center; }
+
+        /* Teacher Dashboard */
+        #teacher-dashboard-modal .modal-content { max-width: 800px; max-height: 90vh; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #E5E7EB; padding: 10px; text-align: left; }
+        th { background: #F3F4F6; position: sticky; top: 0; }
+        .footer-links { text-align: center; padding: 20px; font-size: 0.9rem; color: var(--text-light); margin-top: auto; }
+        .hidden-btn { background: none; border: none; color: inherit; cursor: pointer; text-decoration: underline; opacity: 0.5; }
+
+        /* Animations for feedback */
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        .shake { animation: shake 0.4s ease-in-out; border-color: var(--danger) !important; }
+        .correct-pulse { background-color: var(--secondary) !important; color: white !important; border-color: var(--secondary) !important; transition: all 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .map-container { height: 400px; }
+            .map-node { width: 60px; height: 60px; }
+            .map-node .icon { font-size: 1.5rem; }
+            #node-1 { top: 50px; left: 20px; } #node-2 { top: 30px; left: 150px; } #node-3 { top: 80px; left: 280px; }
+            #node-4 { top: 200px; left: 250px; } #node-5 { top: 250px; left: 120px; } #node-6 { top: 220px; left: 20px; }
+            .raya-guide { flex-direction: column; align-items: center; text-align: center; }
+            .raya-guide::before { display: none; }
+            .bins-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <!-- Top Stats Bar -->
+        <div id="stats-bar">
+            <div class="stat-group">
+                <span id="display-player-name">Player</span>
+            </div>
+            <div class="stat-group">
+                <div class="stat-item"><span class="icon">⭐</span> <span id="stat-stars">0</span></div>
+                <div class="stat-item"><span class="icon">❤️</span> <span id="stat-lives">3</span></div>
+            </div>
+        </div>
+
+        <!-- SCREEN: Welcome -->
+        <div id="screen-welcome" class="screen active">
+            <div style="text-align: center; margin-top: 50px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 5px;">MY FUN WEEKEND</h1>
+                <h2 style="color: var(--text-light); font-weight: normal; margin-bottom: 30px;">Become an English Storyteller!</h2>
+                
+                <div class="raya-guide" style="margin: 0 auto 30px auto;">
+                    <div class="raya-avatar">👩‍🎓</div>
+                    <div class="raya-message">
+                        <strong>Hi! I'm Raya.</strong><br>
+                        Welcome to our weekend adventure! Let's learn how to tell stories about our past activities in English. What is your name?
+                    </div>
+                </div>
+
+                <input type="text" id="player-name-input" placeholder="Type your name here..." autocomplete="off">
+                <br>
+                <button class="btn" onclick="game.startGame()">Start Adventure 🚀</button>
+            </div>
+        </div>
+
+        <!-- SCREEN: Game Map -->
+        <div id="screen-map" class="screen">
+            <h2>Activity Map</h2>
+            <p style="color: var(--text-light); margin-bottom: 20px;">Choose an unlocked location to continue your adventure!</p>
+            
+            <div class="map-container" id="map-container">
+                <!-- Paths will be drawn by JS -->
+                <!-- Nodes -->
+                <div class="map-node unlocked" id="node-1" onclick="game.enterLevel(1)">
+                    <span class="icon">🏠</span><span class="label">Word<br>House</span>
+                </div>
+                <div class="map-node locked" id="node-2" onclick="game.enterLevel(2)">
+                    <span class="icon">🔬</span><span class="label">Verb<br>Lab</span>
+                </div>
+                <div class="map-node locked" id="node-3" onclick="game.enterLevel(3)">
+                    <span class="icon">⏳</span><span class="label">Time<br>Machine</span>
+                </div>
+                <div class="map-node locked" id="node-4" onclick="game.enterLevel(4)">
+                    <span class="icon">🏭</span><span class="label">Sentence<br>Factory</span>
+                </div>
+                <div class="map-node locked" id="node-5" onclick="game.enterLevel(5)">
+                    <span class="icon">🌲</span><span class="label">Story<br>Park</span>
+                </div>
+                <div class="map-node locked" id="node-6" onclick="game.enterLevel(6)">
+                    <span class="icon">🎭</span><span class="label">Story<br>Stage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN: Generic Level Container -->
+        <div id="screen-level" class="screen">
+            <div class="level-header">
+                <button class="btn btn-outline" onclick="game.showScreen('map')">⬅ Map</button>
+                <h2 class="level-title" id="current-level-title">Level Title</h2>
+                <button class="btn btn-accent" id="btn-hint" onclick="game.useHint()">💡 Hint</button>
+            </div>
+            
+            <div class="raya-guide" id="level-instruction">
+                <div class="raya-avatar">👩‍🎓</div>
+                <div class="raya-message" id="instruction-text">Instruction here...</div>
+            </div>
+
+            <!-- Dynamic Level Content goes here -->
+            <div class="level-content" id="level-content-area"></div>
+        </div>
+
+        <!-- SCREEN: Certificate -->
+        <div id="screen-certificate" class="screen">
+            <button class="btn btn-outline" style="margin-bottom: 20px; align-self: flex-start;" onclick="game.showScreen('map')">⬅ Back</button>
+            <div id="certificate-container">
+                <div class="cert-header">Certificate of Achievement</div>
+                <div class="cert-subtitle">This is proudly presented to</div>
+                <div class="cert-name" id="cert-name-display">Student Name</div>
+                <div class="cert-body">
+                    For successfully completing the <strong>"My Fun Weekend"</strong> adventure and demonstrating excellent storytelling skills in English!
+                    <br><br>
+                    <strong>Total Stars Earned: <span id="cert-stars">0</span> ⭐</strong>
+                </div>
+                <h3>Badges Unlocked:</h3>
+                <div class="badges-display" id="cert-badges">
+                    <!-- Badges injected by JS -->
+                </div>
+                <div style="margin-top: 40px; display: flex; justify-content: space-between; padding: 0 40px;">
+                    <div style="border-top: 1px solid #000; padding-top: 5px;">English Teacher</div>
+                    <div style="border-top: 1px solid #000; padding-top: 5px;">Raya (Guide)</div>
+                </div>
+            </div>
+            <button class="btn" onclick="window.print()">🖨️ Print Certificate</button>
+        </div>
+
+        <!-- Modals -->
+        <!-- Generic Feedback Modal -->
+        <div class="modal-overlay" id="modal-feedback">
+            <div class="modal-content">
+                <div class="modal-icon" id="feedback-icon">🎉</div>
+                <h2 class="modal-title" id="feedback-title">Great Job!</h2>
+                <p class="modal-text" id="feedback-message">You completed the task.</p>
+                <div id="feedback-badges" class="badges-display" style="display: none; justify-content: center;"></div>
+                <button class="btn" id="feedback-btn" onclick="game.closeFeedback()">Continue</button>
+            </div>
+        </div>
+
+        <!-- Reflection Modal -->
+        <div class="modal-overlay" id="modal-reflection">
+            <div class="modal-content">
+                <h2 class="modal-title">Self Reflection</h2>
+                <p class="modal-text">How do you feel about what you learned?</p>
+                <div style="text-align: left; margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px;">
+                        <input type="checkbox" id="ref-1"> I know some action verbs.
+                    </label>
+                    <label style="display: block; margin-bottom: 10px;">
+                        <input type="checkbox" id="ref-2"> I understand Present vs Past verbs.
+                    </label>
+                    <label style="display: block; margin-bottom: 10px;">
+                        <input type="checkbox" id="ref-3"> I can arrange a simple past tense sentence.
+                    </label>
+                </div>
+                <p>Rate your confidence:</p>
+                <div style="font-size: 2rem; cursor: pointer; margin-bottom: 20px;" id="star-rating">
+                    <span data-val="1">☆</span><span data-val="2">☆</span><span data-val="3">☆</span><span data-val="4">☆</span><span data-val="5">☆</span>
+                </div>
+                <button class="btn" onclick="game.submitReflection()">Submit & View Certificate</button>
+            </div>
+        </div>
+
+        <!-- Teacher Dashboard Modal -->
+        <div class="modal-overlay" id="teacher-dashboard-modal">
+            <div class="modal-content">
+                <h2 class="modal-title">Teacher Dashboard</h2>
+                <p class="modal-text">Local Storage Data Viewer</p>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <table id="dashboard-table">
+                        <thead>
+                            <tr><th>Name</th><th>Progress (%)</th><th>Stars</th><th>Badges</th></tr>
+                        </thead>
+                        <tbody id="dashboard-body">
+                            <!-- Data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <button class="btn btn-outline" onclick="document.getElementById('teacher-dashboard-modal').classList.remove('active')">Close</button>
+                <button class="btn btn-secondary" onclick="game.clearAllData()" style="margin-left: 10px;">Clear All Data</button>
+            </div>
+        </div>
+
+        <div class="footer-links">
+            <button class="hidden-btn" onclick="game.openTeacherDashboard()">Teacher Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Game Data & Configuration
+         */
+        const GAME_CONFIG = {
+            totalLevels: 6,
+            badges: {
+                1: { id: 'badge1', name: 'Word Master', icon: '⚽' },
+                2: { id: 'badge2', name: 'Verb Detective', icon: '🔍' },
+                3: { id: 'badge3', name: 'Time Traveler', icon: '⏳' },
+                4: { id: 'badge4', name: 'Sentence Builder', icon: '🧱' },
+                5: { id: 'badge5', name: 'Recount Explorer', icon: '🗺️' },
+                6: { id: 'badge6', name: 'Storyteller', icon: '🎙️' }
+            },
+            levelData: {
+                1: { title: "Word Hunter", hint: "Look at the picture. What are they doing?" },
+                2: { title: "Verb Detective", hint: "Remember: 'played', 'cooked', 'visited' end with -ed (Past)." },
+                3: { title: "Time Traveler", hint: "Past means it already happened (Yesterday, Last...)." },
+                4: { title: "Sentence Factory", hint: "Start with who (Subject), then the action (Verb 2)." },
+                5: { title: "Story Park", hint: "A story starts with When/Who, then What happened, then How they felt." },
+                6: { title: "Story Stage", hint: "Choose your favorite activities to make your own story!" }
+            }
+        };
+
+        // Storage prefix
+        const STORAGE_PREFIX = 'mfw_data_';
+
+        /**
+         * Main Game Controller Engine
+         */
+        const game = {
+            state: {
+                playerName: '',
+                stars: 0,
+                lives: 3,
+                currentLevel: 0,
+                completedLevels: [],
+                unlockedLevels: [1], // Level 1 open by default
+                badges: [],
+                activeLevelData: null // Stores temp data for current level logic
+            },
+            
+            // Audio elements using Web Audio API via basic Synthesis for feedback
+            playAudio(type) {
+                // To keep it single file with no assets, we use simple Beeps or Web Speech API
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if(!ctx) return;
+                
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // A5
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc.start(); osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                    osc.start(); osc.stop(ctx.currentTime + 0.2);
+                }
+            },
+
+            // --- State Management ---
+            saveState() {
+                if (!this.state.playerName) return;
+                const key = STORAGE_PREFIX + this.state.playerName.toLowerCase().replace(/\s+/g, '_');
+                localStorage.setItem(key, JSON.stringify(this.state));
+                localStorage.setItem(STORAGE_PREFIX + 'last_user', key);
+            },
+
+            loadState(nameInput) {
+                const searchKey = nameInput 
+                    ? STORAGE_PREFIX + nameInput.toLowerCase().replace(/\s+/g, '_')
+                    : localStorage.getItem(STORAGE_PREFIX + 'last_user');
+                
+                if (searchKey) {
+                    const saved = localStorage.getItem(searchKey);
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        // Merge saved data with default structure to ensure backwards compatibility if structure changes
+                        this.state = { ...this.state, ...parsed };
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            // --- UI Navigation ---
+            showScreen(screenId) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById('screen-' + screenId).classList.add('active');
+                
+                const statsBar = document.getElementById('stats-bar');
+                if (screenId === 'welcome') {
+                    statsBar.style.display = 'none';
+                } else {
+                    statsBar.style.display = 'flex';
+                    this.updateUI();
+                }
+
+                if (screenId === 'map') this.renderMap();
+                if (screenId === 'certificate') this.renderCertificate();
+                
+                window.scrollTo(0,0);
+            },
+
+            updateUI() {
+                document.getElementById('display-player-name').textContent = this.state.playerName;
+                document.getElementById('stat-stars').textContent = this.state.stars;
+                document.getElementById('stat-lives').textContent = this.state.lives;
+            },
+
+            // --- Core Flows ---
+            startGame() {
+                const nameInput = document.getElementById('player-name-input').value.trim();
+                if (!nameInput) {
+                    alert("Please enter your name to start!"); // Basic fallback
+                    return;
+                }
+                
+                // Try to load existing player, otherwise init new
+                if (!this.loadState(nameInput)) {
+                    this.state.playerName = nameInput;
+                    this.state.stars = 0;
+                    this.state.lives = 3;
+                    this.state.completedLevels = [];
+                    this.state.unlockedLevels = [1];
+                    this.state.badges = [];
+                }
+                
+                this.saveState();
+                this.showScreen('map');
+            },
+
+            renderMap() {
+                // Reset nodes
+                for(let i=1; i<=GAME_CONFIG.totalLevels; i++) {
+                    const node = document.getElementById('node-' + i);
+                    node.className = 'map-node locked';
+                    
+                    if (this.state.completedLevels.includes(i)) {
+                        node.classList.replace('locked', 'completed');
+                    } else if (this.state.unlockedLevels.includes(i)) {
+                        node.classList.replace('locked', 'unlocked');
+                    }
+                }
+            },
+
+            enterLevel(levelNum) {
+                if (!this.state.unlockedLevels.includes(levelNum)) return;
+                
+                this.state.currentLevel = levelNum;
+                this.state.lives = 3; // Reset lives per level attempt
+                this.state.activeLevelData = {}; // Clear temp level state
+                this.updateUI();
+                
+                const config = GAME_CONFIG.levelData[levelNum];
+                document.getElementById('current-level-title').textContent = `Level ${levelNum}: ${config.title}`;
+                
+                const contentArea = document.getElementById('level-content-area');
+                contentArea.innerHTML = ''; // Clear previous
+
+                this.showScreen('level');
+
+                // Route to specific level logic
+                switch(levelNum) {
+                    case 1: this.initLevel1(contentArea); break;
+                    case 2: this.initLevel2(contentArea); break;
+                    case 3: this.initLevel3(contentArea); break;
+                    case 4: this.initLevel4(contentArea); break;
+                    case 5: this.initLevel5(contentArea); break;
+                    case 6: this.initLevel6(contentArea); break;
+                }
+            },
+
+            setInstruction(text) {
+                document.getElementById('instruction-text').innerHTML = text;
+            },
+
+            useHint() {
+                const hint = GAME_CONFIG.levelData[this.state.currentLevel].hint;
+                // Simple inline alert substitution using existing character bubble
+                const ogText = document.getElementById('instruction-text').innerHTML;
+                this.setInstruction(`<strong>Hint:</strong> ${hint}`);
+                setTimeout(() => this.setInstruction(ogText), 5000);
+            },
+
+            // --- Feedback & Progression ---
+            handleCorrect(points = 10) {
+                this.playAudio('correct');
+                this.state.stars += points;
+                this.updateUI();
+                
+                // Visual effect on stars
+                const starEl = document.getElementById('stat-stars').parentElement;
+                starEl.style.transform = 'scale(1.2)';
+                starEl.style.background = '#FEF08A';
+                setTimeout(() => {
+                    starEl.style.transform = 'scale(1)';
+                    starEl.style.background = '#F3F4F6';
+                }, 300);
+            },
+
+            handleWrong(elementToShake) {
+                this.playAudio('wrong');
+                if (elementToShake) {
+                    elementToShake.classList.add('shake');
+                    setTimeout(() => elementToShake.classList.remove('shake'), 400);
+                }
+                
+                this.state.lives--;
+                this.updateUI();
+                
+                if (this.state.lives <= 0) {
+                    setTimeout(() => {
+                        this.showFeedbackModal('Don\'t Give Up!', 'Let\'s try this level again from the start.', '💪', () => {
+                            this.enterLevel(this.state.currentLevel); // Restart level
+                        });
+                    }, 500);
+                }
+            },
+
+            completeLevel() {
+                const lvl = this.state.currentLevel;
+                if (!this.state.completedLevels.includes(lvl)) {
+                    this.state.completedLevels.push(lvl);
+                    
+                    // Award Badge
+                    const badge = GAME_CONFIG.badges[lvl];
+                    if (badge && !this.state.badges.includes(badge.id)) {
+                        this.state.badges.push(badge.id);
+                    }
+
+                    // Unlock next level
+                    if (lvl < GAME_CONFIG.totalLevels && !this.state.unlockedLevels.includes(lvl + 1)) {
+                        this.state.unlockedLevels.push(lvl + 1);
+                    }
+                }
+                
+                this.saveState();
+
+                // Build Badge HTML for modal
+                const badge = GAME_CONFIG.badges[lvl];
+                let badgeHtml = '';
+                if (badge) {
+                    badgeHtml = `
+                        <div class="badge-item" style="margin-top:15px;">
+                            <div class="badge-icon">${badge.icon}</div>
+                            <div class="badge-label">${badge.name} Badge Earned!</div>
+                        </div>`;
+                }
+
+                this.showFeedbackModal(
+                    'Level Complete!', 
+                    `Awesome job! You earned ${this.state.stars} stars so far.`,
+                    '🌟',
+                    () => {
+                        if (lvl === GAME_CONFIG.totalLevels) {
+                            document.getElementById('modal-reflection').classList.add('active');
+                        } else {
+                            this.showScreen('map');
+                        }
+                    },
+                    badgeHtml
+                );
+            },
+
+            showFeedbackModal(title, message, icon, callback, extraHtml = '') {
+                document.getElementById('feedback-title').textContent = title;
+                document.getElementById('feedback-message').textContent = message;
+                document.getElementById('feedback-icon').textContent = icon;
+                
+                const badgeContainer = document.getElementById('feedback-badges');
+                if (extraHtml) {
+                    badgeContainer.innerHTML = extraHtml;
+                    badgeContainer.style.display = 'flex';
+                } else {
+                    badgeContainer.style.display = 'none';
+                }
+
+                const modal = document.getElementById('modal-feedback');
+                modal.classList.add('active');
+                
+                // Store callback on the button
+                const btn = document.getElementById('feedback-btn');
+                btn.onclick = () => {
+                    modal.classList.remove('active');
+                    if (callback) callback();
+                };
+            },
+
+            // ================= LEVEL 1: MATCHING =================
+            initLevel1(container) {
+                this.setInstruction("Find the matching pairs! Click a word, then click the matching picture.");
+                
+                const pairs = [
+                    { id: 'p1', text: 'play', emoji: '⚽' },
+                    { id: 'p2', text: 'watch', emoji: '📺' },
+                    { id: 'p3', text: 'cook', emoji: '🍳' },
+                    { id: 'p4', text: 'clean', emoji: '🧹' },
+                    { id: 'p5', text: 'read', emoji: '📖' },
+                    { id: 'p6', text: 'visit', emoji: '👵' }
+                ];
+
+                let items = [];
+                pairs.forEach(p => {
+                    items.push({ id: p.id, type: 'text', val: p.text });
+                    items.push({ id: p.id, type: 'emoji', val: p.emoji });
+                });
+                
+                // Shuffle
+                items = items.sort(() => Math.random() - 0.5);
+
+                const grid = document.createElement('div');
+                grid.className = 'item-grid';
+                
+                this.state.activeLevelData = {
+                    selectedCard: null,
+                    matchesFound: 0,
+                    totalMatches: pairs.length
+                };
+
+                items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = `card ${item.type === 'emoji' ? 'emoji-card' : ''}`;
+                    card.textContent = item.val;
+                    card.dataset.id = item.id;
+                    card.dataset.type = item.type;
+                    card.dataset.index = index;
+
+                    card.onclick = () => this.handleL1Click(card);
+                    grid.appendChild(card);
+                });
+
+                container.appendChild(grid);
+            },
+
+            handleL1Click(card) {
+                if (card.classList.contains('matched') || card.classList.contains('selected')) return;
+
+                const data = this.state.activeLevelData;
+                
+                if (!data.selectedCard) {
+                    // First selection
+                    data.selectedCard = card;
+                    card.classList.add('selected');
+                } else {
+                    // Second selection
+                    const firstCard = data.selectedCard;
+                    
+                    // Same type clicked? switch selection
+                    if (firstCard.dataset.type === card.dataset.type) {
+                        firstCard.classList.remove('selected');
+                        card.classList.add('selected');
+                        data.selectedCard = card;
+                        return;
+                    }
+
+                    // Check match
+                    if (firstCard.dataset.id === card.dataset.id) {
+                        // Match!
+                        this.handleCorrect();
+                        firstCard.classList.remove('selected');
+                        firstCard.classList.add('matched');
+                        card.classList.add('matched');
+                        data.matchesFound++;
+                        
+                        if (data.matchesFound === data.totalMatches) {
+                            setTimeout(() => this.completeLevel(), 500);
+                        }
+                    } else {
+                        // Wrong
+                        this.handleWrong(card);
+                        card.classList.add('shake');
+                        firstCard.classList.remove('selected');
+                    }
+                    data.selectedCard = null;
+                }
+            },
+
+            // ================= LEVEL 2: SORTING =================
+            initLevel2(container) {
+                this.setInstruction("Sort the verbs! Click a word, then click the correct box (PRESENT or PAST).");
+                
+                const words = [
+                    { word: 'play', type: 'present' }, { word: 'played', type: 'past' },
+                    { word: 'eat', type: 'present' }, { word: 'ate', type: 'past' },
+                    { word: 'watch', type: 'present' }, { word: 'watched', type: 'past' },
+                    { word: 'visit', type: 'present' }, { word: 'visited', type: 'past' }
+                ].sort(() => Math.random() - 0.5);
+
+                this.state.activeLevelData = {
+                    wordsLeft: words.length,
+                    selectedWord: null,
+                    selectedWordEl: null
+                };
+
+                // Word Bank
+                const bank = document.createElement('div');
+                bank.className = 'word-bank';
+                words.forEach((w, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn';
+                    btn.textContent = w.word;
+                    btn.dataset.type = w.type;
+                    btn.onclick = () => {
+                        // Deselect previous
+                        if(this.state.activeLevelData.selectedWordEl) {
+                            this.state.activeLevelData.selectedWordEl.style.borderColor = '#D1D5DB';
+                            this.state.activeLevelData.selectedWordEl.style.backgroundColor = 'var(--white)';
+                        }
+                        btn.style.borderColor = 'var(--primary)';
+                        btn.style.backgroundColor = '#EEF2FF';
+                        this.state.activeLevelData.selectedWord = w;
+                        this.state.activeLevelData.selectedWordEl = btn;
+                    };
+                    bank.appendChild(btn);
+                });
+
+                // Bins
+                const binsWrap = document.createElement('div');
+                binsWrap.className = 'bins-container';
+                
+                ['Present (Verb 1)', 'Past (Verb 2)'].forEach(t => {
+                    const type = t.includes('Present') ? 'present' : 'past';
+                    const bin = document.createElement('div');
+                    bin.className = 'sort-bin';
+                    bin.innerHTML = `<h3>${t}</h3><div class="bin-content" style="width:100%; display:flex; flex-direction:column; gap:5px;"></div>`;
+                    
+                    bin.onclick = () => {
+                        const state = this.state.activeLevelData;
+                        if (!state.selectedWord) return;
+                        
+                        if (state.selectedWord.type === type) {
+                            // Correct drop
+                            this.handleCorrect(5);
+                            const item = document.createElement('div');
+                            item.className = 'card matched';
+                            item.style.padding = '5px';
+                            item.textContent = state.selectedWord.word;
+                            bin.querySelector('.bin-content').appendChild(item);
+                            
+                            state.selectedWordEl.classList.add('used');
+                            state.selectedWord = null;
+                            state.selectedWordEl = null;
+                            state.wordsLeft--;
+                            
+                            if(state.wordsLeft === 0) {
+                                setTimeout(() => this.L2MiniChallenge(container), 500);
+                            }
+                        } else {
+                            this.handleWrong(bin);
+                        }
+                    };
+                    binsWrap.appendChild(bin);
+                });
+
+                container.appendChild(bank);
+                container.appendChild(binsWrap);
+            },
+
+            L2MiniChallenge(container) {
+                this.setInstruction("Mini Challenge! Choose the correct verb for the sentence.");
+                container.innerHTML = `
+                    <div style="text-align:center; padding:20px; background:#fff; border-radius:12px; box-shadow:var(--card-shadow);">
+                        <h3 style="font-size:1.5rem; margin-bottom:20px;">Yesterday, I <span id="blank-spot" style="border-bottom:2px solid #000; padding:0 20px;">______</span> football.</h3>
+                        <div class="word-bank" id="l2-choices">
+                            <button class="btn btn-outline" onclick="game.checkL2Mini('play')">play</button>
+                            <button class="btn btn-outline" onclick="game.checkL2Mini('played')">played</button>
+                            <button class="btn btn-outline" onclick="game.checkL2Mini('playing')">playing</button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            checkL2Mini(ans) {
+                if(ans === 'played') {
+                    this.handleCorrect(20);
+                    document.getElementById('blank-spot').textContent = 'played';
+                    document.getElementById('blank-spot').style.color = 'var(--secondary)';
+                    setTimeout(() => this.completeLevel(), 1000);
+                } else {
+                    this.handleWrong(document.getElementById('l2-choices'));
+                }
+            },
+
+            // ================= LEVEL 3: TIME SIGNALS =================
+            initLevel3(container) {
+                this.setInstruction("Is this time signal for the PAST or the FUTURE? Select and sort.");
+                
+                const signals = [
+                    { word: 'YESTERDAY', type: 'past' },
+                    { word: 'TOMORROW', type: 'future' },
+                    { word: 'LAST NIGHT', type: 'past' },
+                    { word: 'NEXT WEEK', type: 'future' },
+                    { word: 'LAST SUNDAY', type: 'past' }
+                ].sort(() => Math.random() - 0.5);
+
+                this.state.activeLevelData = {
+                    wordsLeft: signals.length, selectedWord: null, selectedWordEl: null
+                };
+
+                const bank = document.createElement('div');
+                bank.className = 'word-bank';
+                signals.forEach(s => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn'; btn.textContent = s.word;
+                    btn.onclick = () => {
+                        if(this.state.activeLevelData.selectedWordEl) this.state.activeLevelData.selectedWordEl.style.borderColor = '#D1D5DB';
+                        btn.style.borderColor = 'var(--primary)';
+                        this.state.activeLevelData.selectedWord = s;
+                        this.state.activeLevelData.selectedWordEl = btn;
+                    };
+                    bank.appendChild(btn);
+                });
+
+                const binsWrap = document.createElement('div');
+                binsWrap.className = 'bins-container';
+                
+                ['PAST (Done)', 'FUTURE (Not Yet)'].forEach(t => {
+                    const type = t.includes('PAST') ? 'past' : 'future';
+                    const bin = document.createElement('div');
+                    bin.className = 'sort-bin';
+                    bin.innerHTML = `<h3>${t}</h3><div class="bin-content" style="width:100%; display:flex; flex-direction:column; gap:5px;"></div>`;
+                    
+                    bin.onclick = () => {
+                        const state = this.state.activeLevelData;
+                        if (!state.selectedWord) return;
+                        
+                        if (state.selectedWord.type === type) {
+                            this.handleCorrect(5);
+                            const item = document.createElement('div');
+                            item.className = 'card matched'; item.style.padding = '5px'; item.textContent = state.selectedWord.word;
+                            bin.querySelector('.bin-content').appendChild(item);
+                            
+                            state.selectedWordEl.classList.add('used');
+                            state.selectedWord = null; state.selectedWordEl = null;
+                            state.wordsLeft--;
+                            
+                            if(state.wordsLeft === 0) {
+                                this.showFeedbackModal('Important Rule!', 'Time signals like YESTERDAY and LAST NIGHT show the action is finished. We use VERB 2!', '💡', () => this.completeLevel());
+                            }
+                        } else {
+                            this.handleWrong(bin);
+                        }
+                    };
+                    binsWrap.appendChild(bin);
+                });
+
+                container.appendChild(bank);
+                container.appendChild(binsWrap);
+            },
+
+            // ================= LEVEL 4: SENTENCE BUILDER =================
+            initLevel4(container) {
+                this.setInstruction("Build the sentence! Click words in the correct order.");
+                
+                const sentences = [
+                    ['I', 'played', 'football', 'yesterday.'],
+                    ['My sister', 'cooked', 'rice', 'last night.'],
+                    ['We', 'visited', 'our grandmother', 'last Sunday.']
+                ];
+                
+                this.state.activeLevelData = {
+                    currentQ: 0,
+                    sentences: sentences,
+                    container: container
+                };
+
+                this.renderL4Question();
+            },
+
+            renderL4Question() {
+                const data = this.state.activeLevelData;
+                const container = data.container;
+                container.innerHTML = `<h3 style="text-align:left;">Sentence ${data.currentQ + 1} of ${data.sentences.length}</h3>`;
+                
+                const currentSentence = data.sentences[data.currentQ];
+                let shuffled = [...currentSentence].sort(() => Math.random() - 0.5);
+                // Ensure it's actually shuffled
+                while(shuffled.join('') === currentSentence.join('')) {
+                    shuffled = [...currentSentence].sort(() => Math.random() - 0.5);
+                }
+
+                // Slots
+                const slotsDiv = document.createElement('div');
+                slotsDiv.className = 'sentence-slots';
+                currentSentence.forEach((_, i) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'word-slot';
+                    slot.dataset.index = i;
+                    // Click slot to remove word back to bank
+                    slot.onclick = () => {
+                        if (slot.classList.contains('filled')) {
+                            const text = slot.textContent;
+                            slot.textContent = '';
+                            slot.classList.remove('filled');
+                            // Find hidden button in bank and show it
+                            const btns = bankDiv.querySelectorAll('.word-btn');
+                            for(let btn of btns) {
+                                if(btn.textContent === text && btn.classList.contains('used')) {
+                                    btn.classList.remove('used');
+                                    break;
+                                }
+                            }
+                        }
+                    };
+                    slotsDiv.appendChild(slot);
+                });
+
+                // Bank
+                const bankDiv = document.createElement('div');
+                bankDiv.className = 'word-bank';
+                shuffled.forEach(w => {
+                    const btn = document.createElement('button');
+                    btn.className = 'word-btn';
+                    btn.textContent = w;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('used')) return;
+                        // Find first empty slot
+                        const slots = slotsDiv.querySelectorAll('.word-slot');
+                        for(let slot of slots) {
+                            if (!slot.classList.contains('filled')) {
+                                slot.textContent = w;
+                                slot.classList.add('filled');
+                                btn.classList.add('used');
+                                
+                                // Check if all slots filled
+                                const allFilled = Array.from(slots).every(s => s.classList.contains('filled'));
+                                if (allFilled) this.checkL4Sentence(slotsDiv, currentSentence);
+                                break;
+                            }
+                        }
+                    };
+                    bankDiv.appendChild(btn);
+                });
+
+                container.appendChild(slotsDiv);
+                container.appendChild(bankDiv);
+            },
+
+            checkL4Sentence(slotsDiv, correctArr) {
+                const slots = slotsDiv.querySelectorAll('.word-slot');
+                let userArr = Array.from(slots).map(s => s.textContent);
+                
+                if (userArr.join(' ') === correctArr.join(' ')) {
+                    this.handleCorrect(15);
+                    slotsDiv.classList.add('correct-pulse');
+                    setTimeout(() => {
+                        const data = this.state.activeLevelData;
+                        data.currentQ++;
+                        if (data.currentQ < data.sentences.length) {
+                            this.renderL4Question();
+                        } else {
+                            this.completeLevel();
+                        }
+                    }, 1000);
+                } else {
+                    this.handleWrong(slotsDiv);
+                    // Reset automatically after wrong
+                    setTimeout(() => {
+                        slots.forEach(s => { s.textContent = ''; s.classList.remove('filled'); });
+                        const btns = this.state.activeLevelData.container.querySelectorAll('.word-btn');
+                        btns.forEach(b => b.classList.remove('used'));
+                    }, 800);
+                }
+            },
+
+            // ================= LEVEL 5: RECOUNT EXPLORER =================
+            initLevel5(container) {
+                this.setInstruction("Read the story. Click the sentences to answer the questions below.");
+                
+                container.innerHTML = `
+                    <div class="story-box" id="l5-story">
+                        <span class="highlight-part" data-part="orientation">Last Sunday, I had a fun day.</span>
+                        <span class="highlight-part" data-part="events">In the morning, I played football with my friends. Then, I visited my grandmother. In the afternoon, I watched TV with my family.</span>
+                        <span class="highlight-part" data-part="reorientation">I was very happy.</span>
+                    </div>
+                    <div id="l5-questions" style="background:#fff; padding:15px; border-radius:10px;">
+                        <h4 style="margin-bottom:10px;">Question 1: Which sentence tells us WHEN the story happened? (Click it in the story above)</h4>
+                    </div>
+                `;
+
+                this.state.activeLevelData = {
+                    step: 1,
+                    parts: ['orientation', 'events', 'reorientation'],
+                    questions: [
+                        "Which sentence tells us WHEN and WHO? (Orientation)",
+                        "Which sentences tell us WHAT HAPPENED? (Events)",
+                        "Which sentence tells us HOW the writer FELT? (Reorientation)"
+                    ]
+                };
+
+                const spans = container.querySelectorAll('.highlight-part');
+                spans.forEach(span => {
+                    span.onclick = () => {
+                        // Remove existing highlights
+                        spans.forEach(s => s.classList.remove('highlight-active'));
+                        span.classList.add('highlight-active');
+                        
+                        const data = this.state.activeLevelData;
+                        const targetPart = data.parts[data.step - 1];
+                        
+                        if (span.dataset.part === targetPart) {
+                            this.handleCorrect(10);
+                            span.style.backgroundColor = '#A7F3D0'; // permanent green hint
+                            data.step++;
+                            
+                            if (data.step <= 3) {
+                                document.querySelector('#l5-questions h4').textContent = `Question ${data.step}: ${data.questions[data.step-1]}`;
+                            } else {
+                                setTimeout(() => this.L5Puzzle(container), 1000);
+                            }
+                        } else {
+                            this.handleWrong(span);
+                        }
+                    };
+                });
+            },
+
+            L5Puzzle(container) {
+                this.setInstruction("Final Step! Arrange the story parts in the correct order: 1. Orientation -> 2. Events -> 3. Reorientation. Click to swap!");
+                
+                const piecesData = [
+                    { id: 'events', text: "In the morning, I played football. Then, I visited my grandmother." },
+                    { id: 'reorientation', text: "I was very happy." },
+                    { id: 'orientation', text: "Last Sunday, I had a fun day." }
+                ];
+                
+                this.state.activeLevelData = { selectedPiece: null, currentOrder: piecesData };
+
+                const renderPuzzle = () => {
+                    container.innerHTML = '<div class="puzzle-container" id="puzzle-wrap"></div>';
+                    const wrap = document.getElementById('puzzle-wrap');
+                    
+                    this.state.activeLevelData.currentOrder.forEach((p, idx) => {
+                        const piece = document.createElement('div');
+                        piece.className = 'puzzle-piece';
+                        piece.innerHTML = `<strong>Part ${idx + 1}:</strong> ${p.text}`;
+                        
+                        piece.onclick = () => {
+                            const data = this.state.activeLevelData;
+                            if (!data.selectedPiece) {
+                                data.selectedPiece = { el: piece, idx: idx };
+                                piece.classList.add('selected');
+                            } else {
+                                // Swap
+                                const idx1 = data.selectedPiece.idx;
+                                const idx2 = idx;
+                                const temp = data.currentOrder[idx1];
+                                data.currentOrder[idx1] = data.currentOrder[idx2];
+                                data.currentOrder[idx2] = temp;
+                                
+                                data.selectedPiece = null;
+                                renderPuzzle();
+                                checkPuzzle();
+                            }
+                        };
+                        wrap.appendChild(piece);
+                    });
+                };
+
+                const checkPuzzle = () => {
+                    const order = this.state.activeLevelData.currentOrder.map(p => p.id);
+                    if (order[0] === 'orientation' && order[1] === 'events' && order[2] === 'reorientation') {
+                        this.handleCorrect(20);
+                        document.querySelectorAll('.puzzle-piece').forEach(p => p.style.borderColor = 'var(--secondary)');
+                        setTimeout(() => this.completeLevel(), 1000);
+                    }
+                };
+
+                renderPuzzle();
+            },
+
+            // ================= LEVEL 6: STORYTELLER =================
+            initLevel6(container) {
+                this.setInstruction("Create your own weekend story! Choose your activities.");
+                
+                container.innerHTML = `
+                    <div style="background:#fff; padding:20px; border-radius:12px; box-shadow:var(--card-shadow); text-align:left;">
+                        <p style="font-weight:bold; margin-bottom:10px;">Yesterday, I...</p>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label>Activity 1: </label>
+                            <select id="l6-act1" style="padding:8px; border-radius:5px; width:100%; max-width:300px; margin-top:5px;">
+                                <option value="">-- Choose --</option>
+                                <option value="played football with my friends">played football with my friends ⚽</option>
+                                <option value="helped my mother cook">helped my mother cook 🍳</option>
+                                <option value="cleaned my bedroom">cleaned my bedroom 🧹</option>
+                            </select>
+                        </div>
+
+                        <p style="font-weight:bold; margin-bottom:10px;">Then, I...</p>
+                        <div style="margin-bottom: 15px;">
+                            <label>Activity 2: </label>
+                            <select id="l6-act2" style="padding:8px; border-radius:5px; width:100%; max-width:300px; margin-top:5px;">
+                                <option value="">-- Choose --</option>
+                                <option value="watched a movie on TV">watched a movie on TV 📺</option>
+                                <option value="visited my grandmother">visited my grandmother 👵</option>
+                                <option value="read a comic book">read a comic book 📖</option>
+                            </select>
+                        </div>
+
+                        <p style="font-weight:bold; margin-bottom:10px;">I felt...</p>
+                        <div style="margin-bottom: 20px;">
+                            <select id="l6-feel" style="padding:8px; border-radius:5px; width:100%; max-width:300px;">
+                                <option value="">-- Choose --</option>
+                                <option value="very happy">very happy 😊</option>
+                                <option value="tired but excited">tired but excited 😅</option>
+                            </select>
+                        </div>
+
+                        <div id="story-preview" style="display:none; padding:15px; background:#F0F9FF; border-left:4px solid var(--primary); margin-bottom:20px; font-style:italic;"></div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-secondary" onclick="game.generateStory()">Generate Story ✍️</button>
+                            <button class="btn btn-accent" id="btn-listen" style="display:none;" onclick="game.listenStory()">Listen 🔊</button>
+                            <button class="btn" id="btn-finish-l6" style="display:none;" onclick="game.completeLevel()">Finish Adventure! 🎉</button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            generateStory() {
+                const act1 = document.getElementById('l6-act1').value;
+                const act2 = document.getElementById('l6-act2').value;
+                const feel = document.getElementById('l6-feel').value;
+
+                if (!act1 || !act2 || !feel) {
+                    alert("Please choose all activities and feelings first!");
+                    return;
+                }
+
+                const story = `Yesterday, I ${act1}. Then, I ${act2}. I felt ${feel}.`;
+                const preview = document.getElementById('story-preview');
+                preview.textContent = story;
+                preview.style.display = 'block';
+                
+                this.state.activeLevelData = { finalStory: story };
+                
+                document.getElementById('btn-listen').style.display = 'inline-flex';
+                document.getElementById('btn-finish-l6').style.display = 'inline-flex';
+                this.handleCorrect(20);
+            },
+
+            listenStory() {
+                if (!this.state.activeLevelData || !this.state.activeLevelData.finalStory) return;
+                
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(this.state.activeLevelData.finalStory);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.9; // Slightly slower for learners
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert("Sorry, your browser does not support text-to-speech.");
+                }
+            },
+
+            // --- Final Flows ---
+            submitReflection() {
+                // In a real app, save reflection data. Here we just proceed.
+                document.getElementById('modal-reflection').classList.remove('active');
+                this.showScreen('certificate');
+            },
+
+            renderCertificate() {
+                document.getElementById('cert-name-display').textContent = this.state.playerName;
+                document.getElementById('cert-stars').textContent = this.state.stars;
+                
+                const badgesContainer = document.getElementById('cert-badges');
+                badgesContainer.innerHTML = '';
+                
+                this.state.badges.forEach(badgeId => {
+                    // Find badge config
+                    let badgeObj = null;
+                    for (let key in GAME_CONFIG.badges) {
+                        if (GAME_CONFIG.badges[key].id === badgeId) badgeObj = GAME_CONFIG.badges[key];
+                    }
+                    
+                    if (badgeObj) {
+                        badgesContainer.innerHTML += `
+                            <div class="badge-item">
+                                <div class="badge-icon">${badgeObj.icon}</div>
+                                <div class="badge-label">${badgeObj.name}</div>
+                            </div>
+                        `;
+                    }
+                });
+            },
+
+            // --- Teacher Dashboard ---
+            openTeacherDashboard() {
+                const tbody = document.getElementById('dashboard-body');
+                tbody.innerHTML = '';
+                
+                let foundData = false;
+                
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith(STORAGE_PREFIX) && key !== STORAGE_PREFIX + 'last_user') {
+                        try {
+                            const data = JSON.parse(localStorage.getItem(key));
+                            const progress = Math.round((data.completedLevels.length / GAME_CONFIG.totalLevels) * 100);
+                            
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td><strong>${data.playerName}</strong></td>
+                                <td>
+                                    <div style="background:#E5E7EB; width:100%; height:10px; border-radius:5px; overflow:hidden;">
+                                        <div style="width:${progress}%; height:100%; background:var(--secondary);"></div>
+                                    </div>
+                                    <small>${progress}% (${data.completedLevels.length}/${GAME_CONFIG.totalLevels})</small>
+                                </td>
+                                <td>${data.stars} ⭐</td>
+                                <td>${data.badges.length} 🏅</td>
+                            `;
+                            tbody.appendChild(tr);
+                            foundData = true;
+                        } catch(e) { console.error("Error parsing stored data", e); }
+                    }
+                }
+
+                if (!foundData) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No student data found.</td></tr>';
+                }
+
+                document.getElementById('teacher-dashboard-modal').classList.add('active');
+            },
+
+            clearAllData() {
+                if(confirm("Are you sure you want to delete all student data? This cannot be undone.")) {
+                    const keysToRemove = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        if (localStorage.key(i).startsWith(STORAGE_PREFIX)) {
+                            keysToRemove.push(localStorage.key(i));
+                        }
+                    }
+                    keysToRemove.forEach(k => localStorage.removeItem(k));
+                    this.openTeacherDashboard(); // Refresh
+                    
+                    // Reset current session if cleared
+                    if(keysToRemove.length > 0) {
+                         alert("Data cleared. Returning to start.");
+                         location.reload();
+                    }
+                }
+            },
+
+            closeFeedback() {
+                // Handled in showFeedbackModal callback assignment
+            }
+        };
+
+        // --- Event Listeners for star rating in reflection ---
+        document.getElementById('star-rating').addEventListener('click', function(e) {
+            if(e.target.tagName === 'SPAN') {
+                const val = parseInt(e.target.dataset.val);
+                const stars = this.querySelectorAll('span');
+                stars.forEach((s, i) => {
+                    if (i < val) {
+                        s.style.color = 'var(--accent)';
+                        s.textContent = '★';
+                    } else {
+                        s.style.color = '#D1D5DB';
+                        s.textContent = '☆';
+                    }
+                });
+            }
+        });
+
+        // Setup Enter key for name input
+        document.getElementById('player-name-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                game.startGame();
+            }
+        });
+
+        // Initialize: Try to load last user to populate input field optionally
+        window.onload = () => {
+            const lastUserKey = localStorage.getItem(STORAGE_PREFIX + 'last_user');
+            if (lastUserKey) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(lastUserKey));
+                    if(data && data.playerName) {
+                        document.getElementById('player-name-input').value = data.playerName;
+                    }
+                } catch(e) {}
+            }
+        };
+
+    </script>
+</body>
+</html>
